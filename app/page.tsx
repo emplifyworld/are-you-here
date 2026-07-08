@@ -30,12 +30,20 @@ export default async function Home() {
   }
   const cities = Object.values(citiesMap).sort((a, b) => b.count - a.count);
 
+  const hasOwnVisit = !!currentUser && (visits ?? []).some((v) => v.users?.id === currentUser.id);
+
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-gray-900">Who else is visiting?</h1>
         <p className="text-gray-500">Add your trip and privately connect with others in the same city.</p>
       </div>
+
+      {currentUser && !hasOwnVisit && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5 text-sm text-amber-700 text-center">
+          👋 Add your first visit to get started!
+        </div>
+      )}
 
       <AddVisitForm currentUserId={currentUser?.id ?? null} />
 
