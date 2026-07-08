@@ -61,7 +61,7 @@ export default function InboxClient({ currentUserId }: { currentUserId: string |
   if (!currentUserId) {
     return (
       <div className="text-gray-500 text-sm">
-        <a href="/login" className="text-indigo-600 font-medium hover:underline">Log in</a> to view your connection requests.
+        <a href="/login" className="text-teal-600 font-medium hover:underline">Log in</a> to view your connection requests.
       </div>
     );
   }
@@ -95,14 +95,14 @@ export default function InboxClient({ currentUserId }: { currentUserId: string |
 
                 {c.sender?.bio && <p className="text-sm text-gray-600">{c.sender.bio}</p>}
                 {c.message && (
-                  <blockquote className="text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2 border-l-4 border-indigo-300 italic">
+                  <blockquote className="text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2 border-l-4 border-teal-300 italic">
                     "{c.message}"
                   </blockquote>
                 )}
 
                 {c.status === "accepted" && (
                   <a href={c.sender?.linkedin_url} target="_blank" rel="noopener noreferrer"
-                    className="text-sm text-indigo-600 hover:underline inline-block">
+                    className="text-sm text-teal-600 hover:underline inline-block">
                     View LinkedIn profile ↗
                   </a>
                 )}
@@ -148,7 +148,7 @@ export default function InboxClient({ currentUserId }: { currentUserId: string |
                 )}
                 {c.status === "accepted" && (
                   <a href={c.recipient?.linkedin_url} target="_blank" rel="noopener noreferrer"
-                    className="text-sm text-indigo-600 hover:underline inline-block">
+                    className="text-sm text-teal-600 hover:underline inline-block">
                     View LinkedIn profile ↗
                   </a>
                 )}

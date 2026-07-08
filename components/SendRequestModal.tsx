@@ -53,7 +53,7 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               placeholder={`Hey ${recipient.name}, I'll be in town around the same time…`}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
           </div>
 
@@ -61,7 +61,7 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
+              className="flex-1 bg-teal-600 text-white py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50"
             >
               {loading ? "Sending..." : "Send request"}
             </button>

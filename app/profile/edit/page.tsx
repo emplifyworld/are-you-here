@@ -15,7 +15,7 @@ export default async function ProfileEditPage({ searchParams }: Props) {
   return (
     <main className="max-w-xl mx-auto px-4 py-8 space-y-6">
       <div>
-        <a href="/" className="text-sm text-indigo-600 hover:underline">← Home</a>
+        <a href="/" className="text-sm text-teal-600 hover:underline">← Home</a>
         <h1 className="text-2xl font-bold text-gray-900 mt-2">Edit your profile</h1>
       </div>
       <ProfileEditForm user={currentUser} welcome={welcome === "1"} />

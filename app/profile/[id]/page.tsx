@@ -31,18 +31,18 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <main className="max-w-xl mx-auto px-4 py-8 space-y-6">
-      <a href="/" className="text-sm text-indigo-600 hover:underline">← Home</a>
+      <a href="/" className="text-sm text-teal-600 hover:underline">← Home</a>
 
       <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
         <div className="flex items-start justify-between gap-2">
           <div>
             <h1 className="text-xl font-bold text-gray-900">{user.name}</h1>
             {user.payment_status === "paid" && (
-              <span className="inline-block mt-1 text-xs bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-medium">Pro</span>
+              <span className="inline-block mt-1 text-xs bg-teal-100 text-teal-600 px-1.5 py-0.5 rounded-full font-medium">Pro</span>
             )}
           </div>
           {isOwnProfile && (
-            <a href="/profile/edit" className="text-sm text-indigo-600 hover:underline whitespace-nowrap">
+            <a href="/profile/edit" className="text-sm text-teal-600 hover:underline whitespace-nowrap">
               Edit profile
             </a>
           )}
@@ -61,7 +61,7 @@ export default async function ProfilePage({ params }: Props) {
         )}
 
         {linkedinUrl ? (
-          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-indigo-600 hover:underline inline-block">
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-teal-600 hover:underline inline-block">
             LinkedIn ↗
           </a>
         ) : (

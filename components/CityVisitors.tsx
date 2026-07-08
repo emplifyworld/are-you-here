@@ -82,7 +82,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
         </div>
         <div>
@@ -91,12 +91,12 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
         </div>
         <button
           onClick={applyFilter}
-          className="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+          className="bg-teal-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
         >
           Filter
         </button>
@@ -109,7 +109,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
 
       {/* My visit banner */}
       {myVisit && (
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-sm text-indigo-700">
+        <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 text-sm text-teal-700">
           Your visit: <strong>{new Date(myVisit.start_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}</strong> – <strong>{new Date(myVisit.end_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}</strong>
           {myActivities.length > 0 && <span className="ml-2">· {myActivities.join(", ")}</span>}
         </div>
@@ -135,9 +135,9 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                 <div className="flex-1 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <a href={`/profile/${u.id}`} className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{u.name}</a>
+                      <a href={`/profile/${u.id}`} className="font-semibold text-gray-900 hover:text-teal-600 transition-colors">{u.name}</a>
                       {u.payment_status === "paid" && (
-                        <span className="ml-2 text-xs bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-medium">Pro</span>
+                        <span className="ml-2 text-xs bg-teal-100 text-teal-600 px-1.5 py-0.5 rounded-full font-medium">Pro</span>
                       )}
                     </div>
                     <span className="text-xs text-gray-400 whitespace-nowrap">
@@ -155,7 +155,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                       </span>
                     ))}
                     {shared.length > 0 && (
-                      <span className="text-xs text-indigo-600 font-medium ml-1">
+                      <span className="text-xs text-teal-600 font-medium ml-1">
                         ✓ {shared.length} shared interest{shared.length > 1 ? "s" : ""}
                       </span>
                     )}
@@ -167,7 +167,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                     href={u.linkedin_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-indigo-600 hover:underline"
+                    className="text-xs text-teal-600 hover:underline"
                   >
                     LinkedIn ↗
                   </a>
@@ -178,14 +178,14 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                       className={`text-sm px-4 py-1.5 rounded-lg font-medium transition-colors ${
                         alreadySent
                           ? "bg-green-100 text-green-700 cursor-default"
-                          : "bg-indigo-600 text-white hover:bg-indigo-700"
+                          : "bg-teal-600 text-white hover:bg-teal-700"
                       }`}
                     >
                       {alreadySent ? "✓ Request sent" : "Send request"}
                     </button>
                   )}
                   {!isSelf && !currentUserId && (
-                    <a href="/login" className="text-sm text-indigo-600 hover:underline">
+                    <a href="/login" className="text-sm text-teal-600 hover:underline">
                       Log in to connect
                     </a>
                   )}

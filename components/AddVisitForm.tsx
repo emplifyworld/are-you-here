@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const ACTIVITY_OPTIONS = ["coffee", "hiking", "meal", "movie"];
+const ACTIVITY_ICONS: Record<string, string> = { coffee: "☕", hiking: "🥾", meal: "🍽️", movie: "🎬" };
 const CITY_OPTIONS = [
   "San Francisco, CA",
   "New York, NY",
@@ -61,7 +62,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
   if (!currentUserId) {
     return (
       <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 text-sm text-gray-600">
-        <a href="/login" className="text-indigo-600 font-medium hover:underline">Log in</a> to add your visit and connect with others.
+        <a href="/login" className="text-teal-600 font-medium hover:underline">Log in</a> to add your visit and connect with others.
       </div>
     );
   }
@@ -71,7 +72,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          className="w-full sm:w-auto bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          className="w-full sm:w-auto bg-teal-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-colors"
         >
           + Add my visit
         </button>
@@ -84,7 +85,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
             <select
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
             >
               {CITY_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
@@ -94,7 +95,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
                 value={customCity}
                 onChange={(e) => setCustomCity(e.target.value)}
                 placeholder="City name..."
-                className="mt-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="mt-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
               />
             )}
           </div>
@@ -106,7 +107,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
               />
             </div>
             <div>
@@ -115,7 +116,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
               />
             </div>
           </div>
@@ -128,13 +129,13 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
                   key={a}
                   type="button"
                   onClick={() => toggleActivity(a)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                     activities.includes(a)
-                      ? "bg-indigo-100 border-indigo-400 text-indigo-700"
-                      : "bg-gray-50 border-gray-300 text-gray-600 hover:border-indigo-300"
+                      ? "bg-teal-500 border-teal-500 text-white"
+                      : "bg-gray-50 border-gray-300 text-gray-600 hover:border-teal-300"
                   }`}
                 >
-                  {a}
+                  {ACTIVITY_ICONS[a]} {a}
                 </button>
               ))}
             </div>
@@ -144,7 +145,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
             <button
               type="submit"
               disabled={loading}
-              className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
+              className="bg-teal-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50"
             >
               {loading ? "Saving..." : "Save visit"}
             </button>

@@ -33,11 +33,21 @@ export default async function Home() {
   const hasOwnVisit = !!currentUser && (visits ?? []).some((v) => v.users?.id === currentUser.id);
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Who else is visiting?</h1>
-        <p className="text-gray-500">Add your trip and privately connect with others in the same city.</p>
+    <>
+      <div className="bg-slate-950 px-4 py-10">
+        <div className="max-w-4xl mx-auto text-center space-y-3">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Unlock real connections.</h1>
+          <p className="text-teal-300 font-medium">Meet someone during your trip.</p>
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 pt-2 text-sm text-slate-300">
+            <li className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Find who&apos;s in the same city</li>
+            <li className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Find the common interest</li>
+            <li className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Send a private request</li>
+            <li className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Meet up in person!</li>
+          </ul>
+        </div>
       </div>
+
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
 
       {currentUser && !hasOwnVisit && (
         <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5 text-sm text-amber-700 text-center">
@@ -55,6 +65,7 @@ export default async function Home() {
       ) : (
         <CityGrid cities={cities} />
       )}
-    </main>
+      </main>
+    </>
   );
 }

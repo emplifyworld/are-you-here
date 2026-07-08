@@ -6,7 +6,7 @@ export default function SuccessPage() {
       <p className="text-gray-600">Your account is now upgraded. You can send unlimited connection requests.</p>
       <a
         href="/"
-        className="inline-block mt-4 bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+        className="inline-block mt-4 bg-teal-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-colors"
       >
         Back to home
       </a>

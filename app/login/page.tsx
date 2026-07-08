@@ -37,9 +37,9 @@ export default function LoginPage() {
       </div>
 
       {sent ? (
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5 text-center space-y-1">
-          <p className="text-indigo-700 font-medium">Check your email</p>
-          <p className="text-sm text-indigo-500">We sent a login link to {email}.</p>
+        <div className="bg-teal-50 border border-teal-200 rounded-xl p-5 text-center space-y-1">
+          <p className="text-teal-700 font-medium">Check your email</p>
+          <p className="text-sm text-teal-500">We sent a login link to {email}.</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -51,14 +51,14 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
+            className="w-full bg-teal-600 text-white py-2.5 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50"
           >
             {loading ? "Sending..." : "Send magic link"}
           </button>

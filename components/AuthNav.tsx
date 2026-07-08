@@ -14,7 +14,7 @@ export default function AuthNav({ userName }: { userName: string | null }) {
 
   if (!userName) {
     return (
-      <a href="/login" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <a href="/login" className="text-sm font-medium text-teal-400 hover:text-teal-300">
         Log in
       </a>
     );
@@ -22,10 +22,10 @@ export default function AuthNav({ userName }: { userName: string | null }) {
 
   return (
     <div className="flex items-center gap-3">
-      <a href="/profile/edit" className="text-sm text-gray-600 hover:text-indigo-600 transition-colors">
+      <a href="/profile/edit" className="text-sm text-slate-300 hover:text-teal-400 transition-colors">
         {userName}
       </a>
-      <button onClick={handleLogout} className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
+      <button onClick={handleLogout} className="text-sm text-slate-500 hover:text-slate-300 transition-colors">
         Log out
       </button>
     </div>

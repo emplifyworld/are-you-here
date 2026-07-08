@@ -32,7 +32,7 @@ export default async function CityPage({ params, searchParams }: Props) {
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       <div>
-        <a href="/" className="text-sm text-indigo-600 hover:underline">← All cities</a>
+        <a href="/" className="text-sm text-teal-600 hover:underline">← All cities</a>
         <h1 className="text-2xl font-bold text-gray-900 mt-2">{city}</h1>
         <p className="text-gray-500 text-sm mt-1">{visits?.length ?? 0} upcoming visitor{visits?.length !== 1 ? "s" : ""}</p>
       </div>

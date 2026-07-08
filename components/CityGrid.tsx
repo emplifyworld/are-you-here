@@ -22,12 +22,12 @@ export default function CityGrid({ cities }: { cities: City[] }) {
           <a
             key={c.city}
             href={`/city/${c.slug}`}
-            className="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-400 hover:shadow-md transition-all group"
+            className="bg-white rounded-xl border border-gray-200 p-5 hover:border-teal-400 hover:shadow-md transition-all group"
           >
             <div className="text-3xl mb-2">{CITY_EMOJIS[c.city] ?? "🌍"}</div>
-            <div className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{c.city}</div>
+            <div className="font-semibold text-gray-900 group-hover:text-teal-600 transition-colors">{c.city}</div>
             <div className="text-sm text-gray-500 mt-1">
-              <span className="font-medium text-indigo-600">{c.count}</span> {c.count === 1 ? "visitor" : "visitors"}
+              <span className="font-medium text-teal-600">{c.count}</span> {c.count === 1 ? "visitor" : "visitors"}
             </div>
             <div className="text-xs text-gray-400 mt-1">Next visit: {new Date(c.nextDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
           </a>

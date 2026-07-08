@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import type { AppUser } from "@/lib/auth";
 
 const ACTIVITY_OPTIONS = ["coffee", "hiking", "meal", "movie"];
+const ACTIVITY_ICONS: Record<string, string> = { coffee: "☕", hiking: "🥾", meal: "🍽️", movie: "🎬" };
 
 export default function ProfileEditForm({ user, welcome }: { user: AppUser; welcome: boolean }) {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
   return (
     <div className="space-y-6">
       {welcome && (
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-sm text-indigo-700">
+        <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 text-sm text-teal-700">
           Welcome! Complete your profile to start finding matches.
         </div>
       )}
@@ -64,7 +65,7 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
         </div>
 
@@ -75,7 +76,7 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
             value={linkedinUrl}
             onChange={(e) => setLinkedinUrl(e.target.value)}
             placeholder="https://linkedin.com/in/you"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
         </div>
 
@@ -86,7 +87,7 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
             onChange={(e) => setBio(e.target.value)}
             rows={3}
             placeholder="A short intro for your profile..."
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
         </div>
 
@@ -98,13 +99,13 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
                 key={a}
                 type="button"
                 onClick={() => toggleActivity(a)}
-                className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                   activities.includes(a)
-                    ? "bg-indigo-100 border-indigo-400 text-indigo-700"
-                    : "bg-gray-50 border-gray-300 text-gray-600 hover:border-indigo-300"
+                    ? "bg-teal-500 border-teal-500 text-white"
+                    : "bg-gray-50 border-gray-300 text-gray-600 hover:border-teal-300"
                 }`}
               >
-                {a}
+                {ACTIVITY_ICONS[a]} {a}
               </button>
             ))}
           </div>
@@ -113,7 +114,7 @@ export default function ProfileEditForm({ user, welcome }: { user: AppUser; welc
         <button
           type="submit"
           disabled={loading}
-          className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
+          className="bg-teal-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors disabled:opacity-50"
         >
           {loading ? "Saving..." : "Save profile"}
         </button>
