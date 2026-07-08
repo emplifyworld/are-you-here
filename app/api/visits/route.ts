@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentAppUser } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
@@ -25,17 +26,22 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const currentUser = await getCurrentAppUser();
+  if (!currentUser) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
   const supabase = await createClient();
   const body = await req.json();
-  const { user_id, city, start_date, end_date, activities } = body;
+  const { city, start_date, end_date, activities } = body;
 
-  if (!user_id || !city || !start_date || !end_date) {
+  if (!city || !start_date || !end_date) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("visits")
-    .insert({ user_id, city, start_date, end_date, activities: activities ?? [] })
+    .insert({ user_id: currentUser.id, city, start_date, end_date, activities: activities ?? [] })
     .select()
     .single();
 

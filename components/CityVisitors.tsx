@@ -1,7 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import SendRequestModal from "./SendRequestModal";
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -30,23 +29,17 @@ interface Visit {
 interface Props {
   visits: Visit[];
   city: string;
-  allUsers: { id: string; name: string }[];
+  currentUserId: string | null;
   defaultStart?: string;
   defaultEnd?: string;
 }
 
-export default function CityVisitors({ visits, city, allUsers, defaultStart, defaultEnd }: Props) {
+export default function CityVisitors({ visits, city, currentUserId, defaultStart, defaultEnd }: Props) {
   const router = useRouter();
   const [startDate, setStartDate] = useState(defaultStart ?? "");
   const [endDate, setEndDate] = useState(defaultEnd ?? "");
-  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [modalRecipient, setModalRecipient] = useState<Visit["users"] | null>(null);
   const [sentRequests, setSentRequests] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    const id = localStorage.getItem("demo_user_id") ?? "";
-    setCurrentUserId(id);
-  }, []);
 
   function applyFilter() {
     const params = new URLSearchParams();
@@ -142,7 +135,7 @@ export default function CityVisitors({ visits, city, allUsers, defaultStart, def
                 <div className="flex-1 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="font-semibold text-gray-900">{u.name}</span>
+                      <a href={`/profile/${u.id}`} className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{u.name}</a>
                       {u.payment_status === "paid" && (
                         <span className="ml-2 text-xs bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-medium">Pro</span>
                       )}
@@ -178,7 +171,7 @@ export default function CityVisitors({ visits, city, allUsers, defaultStart, def
                   >
                     LinkedIn ↗
                   </a>
-                  {!isSelf && (
+                  {!isSelf && currentUserId && (
                     <button
                       onClick={() => handleSendRequest(u)}
                       disabled={alreadySent}
@@ -191,6 +184,11 @@ export default function CityVisitors({ visits, city, allUsers, defaultStart, def
                       {alreadySent ? "✓ Request sent" : "Send request"}
                     </button>
                   )}
+                  {!isSelf && !currentUserId && (
+                    <a href="/login" className="text-sm text-indigo-600 hover:underline">
+                      Log in to connect
+                    </a>
+                  )}
                 </div>
               </div>
             );
@@ -198,7 +196,7 @@ export default function CityVisitors({ visits, city, allUsers, defaultStart, def
         </div>
       )}
 
-      {modalRecipient && (
+      {modalRecipient && currentUserId && (
         <SendRequestModal
           recipient={modalRecipient}
           senderId={currentUserId}

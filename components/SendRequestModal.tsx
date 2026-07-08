@@ -24,7 +24,7 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
       const res = await fetch("/api/connections", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sender_id: senderId, recipient_id: recipient.id, message }),
+        body: JSON.stringify({ recipient_id: recipient.id, message }),
       });
 
       if (res.status === 402) {
@@ -32,7 +32,7 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
         const checkoutRes = await fetch("/api/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: senderId }),
+          body: JSON.stringify({}),
         });
         const { url } = await checkoutRes.json();
         if (url) router.push(url);

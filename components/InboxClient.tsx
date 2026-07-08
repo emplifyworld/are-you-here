@@ -20,24 +20,21 @@ interface Connection {
   recipient: { id: string; name: string; bio: string; linkedin_url: string; activity_preferences: string[] };
 }
 
-export default function InboxClient() {
-  const [userId, setUserId] = useState<string>("");
+export default function InboxClient({ currentUserId }: { currentUserId: string | null }) {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const id = localStorage.getItem("demo_user_id") ?? "";
-    setUserId(id);
-    if (id) fetchConnections(id);
+    if (currentUserId) fetchConnections();
     else setLoading(false);
-  }, []);
+  }, [currentUserId]);
 
-  async function fetchConnections(id: string) {
+  async function fetchConnections() {
     setLoading(true);
     try {
-      const res = await fetch(`/api/connections?user_id=${id}`);
+      const res = await fetch(`/api/connections`);
       const data = await res.json();
-      setConnections(data ?? []);
+      setConnections(Array.isArray(data) ? data : []);
     } catch {
       toast.error("Failed to load connections");
     } finally {
@@ -50,7 +47,7 @@ export default function InboxClient() {
       const res = await fetch(`/api/connections/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status, user_id: userId }),
+        body: JSON.stringify({ status }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -61,11 +58,18 @@ export default function InboxClient() {
     }
   }
 
-  if (loading) return <div className="text-gray-400 text-sm">Loading...</div>;
-  if (!userId) return <div className="text-gray-500 text-sm">Select a user on the homepage first.</div>;
+  if (!currentUserId) {
+    return (
+      <div className="text-gray-500 text-sm">
+        <a href="/login" className="text-indigo-600 font-medium hover:underline">Log in</a> to view your connection requests.
+      </div>
+    );
+  }
 
-  const received = connections.filter((c) => c.recipient_id === userId);
-  const sent = connections.filter((c) => c.sender_id === userId);
+  if (loading) return <div className="text-gray-400 text-sm">Loading...</div>;
+
+  const received = connections.filter((c) => c.recipient_id === currentUserId);
+  const sent = connections.filter((c) => c.sender_id === currentUserId);
 
   return (
     <div className="space-y-8">

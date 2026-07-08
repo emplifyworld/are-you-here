@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentAppUser } from "@/lib/auth";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
+  const currentUser = await getCurrentAppUser();
+  if (!currentUser) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
   const supabase = await createClient();
-  const { searchParams } = new URL(req.url);
-  const userId = searchParams.get("user_id");
-
-  if (!userId) return NextResponse.json({ error: "user_id required" }, { status: 400 });
-
   const { data, error } = await supabase
     .from("connection_requests")
     .select("*, sender:users!sender_id(id, name, bio, linkedin_url, activity_preferences), recipient:users!recipient_id(id, name, bio, linkedin_url, activity_preferences)")
-    .or(`sender_id.eq.${userId},recipient_id.eq.${userId}`)
+    .or(`sender_id.eq.${currentUser.id},recipient_id.eq.${currentUser.id}`)
     .order("created_at", { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -19,25 +20,25 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const currentUser = await getCurrentAppUser();
+  if (!currentUser) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
   const supabase = await createClient();
   const body = await req.json();
-  const { sender_id, recipient_id, message } = body;
+  const { recipient_id, message } = body;
+  const sender_id = currentUser.id;
 
-  if (!sender_id || !recipient_id) {
-    return NextResponse.json({ error: "sender_id and recipient_id required" }, { status: 400 });
+  if (!recipient_id) {
+    return NextResponse.json({ error: "recipient_id required" }, { status: 400 });
   }
   if (sender_id === recipient_id) {
     return NextResponse.json({ error: "Cannot connect with yourself" }, { status: 400 });
   }
 
   // Check free tier limit
-  const { data: user } = await supabase
-    .from("users")
-    .select("payment_status")
-    .eq("id", sender_id)
-    .single();
-
-  if (user?.payment_status === "free") {
+  if (currentUser.payment_status === "free") {
     const { data: sentRows } = await supabase
       .from("connection_requests")
       .select("id")

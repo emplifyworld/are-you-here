@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import CityVisitors from "@/components/CityVisitors";
+import { getCurrentAppUser } from "@/lib/auth";
 
 export const revalidate = 0;
 
@@ -14,6 +15,7 @@ export default async function CityPage({ params, searchParams }: Props) {
   const city = decodeURIComponent(slug);
 
   const supabase = await createClient();
+  const currentUser = await getCurrentAppUser();
 
   let query = supabase
     .from("visits")
@@ -27,11 +29,6 @@ export default async function CityPage({ params, searchParams }: Props) {
 
   const { data: visits } = await query;
 
-  const { data: users } = await supabase
-    .from("users")
-    .select("id, name")
-    .order("name");
-
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       <div>
@@ -40,7 +37,13 @@ export default async function CityPage({ params, searchParams }: Props) {
         <p className="text-gray-500 text-sm mt-1">{visits?.length ?? 0} upcoming visitor{visits?.length !== 1 ? "s" : ""}</p>
       </div>
 
-      <CityVisitors visits={visits ?? []} city={city} allUsers={users ?? []} defaultStart={start} defaultEnd={end} />
+      <CityVisitors
+        visits={visits ?? []}
+        city={city}
+        currentUserId={currentUser?.id ?? null}
+        defaultStart={start}
+        defaultEnd={end}
+      />
     </main>
   );
 }

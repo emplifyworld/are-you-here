@@ -1,23 +1,19 @@
 import { createClient } from "@/lib/supabase/server";
 import CityGrid from "@/components/CityGrid";
 import AddVisitForm from "@/components/AddVisitForm";
-import DemoUserPicker from "@/components/DemoUserPicker";
+import { getCurrentAppUser } from "@/lib/auth";
 
 export const revalidate = 0;
 
 export default async function Home() {
   const supabase = await createClient();
+  const currentUser = await getCurrentAppUser();
 
   const { data: visits } = await supabase
     .from("visits")
     .select("id, city, start_date, end_date, activities, users(id, name, bio, linkedin_url, activity_preferences, payment_status)")
     .gte("end_date", new Date().toISOString().split("T")[0])
     .order("start_date", { ascending: true });
-
-  const { data: users } = await supabase
-    .from("users")
-    .select("id, name, payment_status")
-    .order("name");
 
   // Group visits by city
   const citiesMap: Record<string, { city: string; slug: string; count: number; nextDate: string }> = {};
@@ -41,9 +37,7 @@ export default async function Home() {
         <p className="text-gray-500">Add your trip and privately connect with others in the same city.</p>
       </div>
 
-      <DemoUserPicker users={users ?? []} />
-
-      <AddVisitForm />
+      <AddVisitForm currentUserId={currentUser?.id ?? null} />
 
       {cities.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
