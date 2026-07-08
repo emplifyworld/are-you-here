@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export default function SendRequestModal({ recipient, senderId, onClose, onSent }: Props) {
-  const router = useRouter();
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -26,18 +24,6 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recipient_id: recipient.id, message }),
       });
-
-      if (res.status === 402) {
-        // Free limit reached — redirect to checkout
-        const checkoutRes = await fetch("/api/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
-        });
-        const { url } = await checkoutRes.json();
-        if (url) router.push(url);
-        return;
-      }
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to send request");
@@ -70,8 +56,6 @@ export default function SendRequestModal({ recipient, senderId, onClose, onSent 
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
-
-          <p className="text-xs text-gray-400">Free accounts can send up to 3 requests. Upgrade for unlimited ($9.99 one-time).</p>
 
           <div className="flex gap-3">
             <button

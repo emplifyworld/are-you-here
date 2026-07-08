@@ -37,17 +37,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Cannot connect with yourself" }, { status: 400 });
   }
 
-  // Check free tier limit
-  if (currentUser.payment_status === "free") {
-    const { data: sentRows } = await supabase
-      .from("connection_requests")
-      .select("id")
-      .eq("sender_id", sender_id);
-    if ((sentRows?.length ?? 0) >= 3) {
-      return NextResponse.json({ error: "FREE_LIMIT_REACHED" }, { status: 402 });
-    }
-  }
-
   // Check for duplicate
   const { data: existing } = await supabase
     .from("connection_requests")
