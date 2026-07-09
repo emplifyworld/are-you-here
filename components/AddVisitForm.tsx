@@ -14,7 +14,7 @@ const CITY_OPTIONS = [
   "Other",
 ];
 
-export default function AddVisitForm({ currentUserId }: { currentUserId: string | null }) {
+export default function AddVisitForm() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,8 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!currentUserId) { toast.error("Please log in first"); return; }
+    const userId = localStorage.getItem("demo_user_id");
+    if (!userId) { toast.error("Please select a user first"); return; }
     const finalCity = city === "Other" ? customCity.trim() : city;
     if (!finalCity) { toast.error("Please enter a city"); return; }
     if (!startDate || !endDate) { toast.error("Please select dates"); return; }
@@ -41,7 +42,7 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
       const res = await fetch("/api/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ city: finalCity, start_date: startDate, end_date: endDate, activities }),
+        body: JSON.stringify({ user_id: userId, city: finalCity, start_date: startDate, end_date: endDate, activities }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to add visit");
@@ -57,14 +58,6 @@ export default function AddVisitForm({ currentUserId }: { currentUserId: string 
     } finally {
       setLoading(false);
     }
-  }
-
-  if (!currentUserId) {
-    return (
-      <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 text-sm text-gray-600">
-        <a href="/login" className="text-teal-600 font-medium hover:underline">Log in</a> to add your visit and connect with others.
-      </div>
-    );
   }
 
   return (

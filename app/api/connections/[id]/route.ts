@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getCurrentAppUser } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const currentUser = await getCurrentAppUser();
-  if (!currentUser) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  }
-
   const supabase = await createClient();
   const { id } = await params;
   const body = await req.json();
-  const { status } = body;
+  const { status, user_id } = body;
 
   if (!status || !["accepted", "declined"].includes(status)) {
     return NextResponse.json({ error: "status must be 'accepted' or 'declined'" }, { status: 400 });
@@ -25,7 +19,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     .single();
 
   if (!conn) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (conn.recipient_id !== currentUser.id) {
+  if (conn.recipient_id !== user_id) {
     return NextResponse.json({ error: "Not authorized" }, { status: 403 });
   }
   if (conn.status !== "pending") {

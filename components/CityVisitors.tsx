@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SendRequestModal from "./SendRequestModal";
 
@@ -29,17 +29,22 @@ interface Visit {
 interface Props {
   visits: Visit[];
   city: string;
-  currentUserId: string | null;
   defaultStart?: string;
   defaultEnd?: string;
 }
 
-export default function CityVisitors({ visits, city, currentUserId, defaultStart, defaultEnd }: Props) {
+export default function CityVisitors({ visits, city, defaultStart, defaultEnd }: Props) {
   const router = useRouter();
   const [startDate, setStartDate] = useState(defaultStart ?? "");
   const [endDate, setEndDate] = useState(defaultEnd ?? "");
+  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [modalRecipient, setModalRecipient] = useState<Visit["users"] | null>(null);
   const [sentRequests, setSentRequests] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const id = localStorage.getItem("demo_user_id") ?? "";
+    setCurrentUserId(id);
+  }, []);
 
   function applyFilter() {
     const params = new URLSearchParams();
@@ -171,7 +176,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                   >
                     LinkedIn ↗
                   </a>
-                  {!isSelf && currentUserId && (
+                  {!isSelf && (
                     <button
                       onClick={() => handleSendRequest(u)}
                       disabled={alreadySent}
@@ -184,11 +189,6 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
                       {alreadySent ? "✓ Request sent" : "Send request"}
                     </button>
                   )}
-                  {!isSelf && !currentUserId && (
-                    <a href="/login" className="text-sm text-teal-600 hover:underline">
-                      Log in to connect
-                    </a>
-                  )}
                 </div>
               </div>
             );
@@ -196,7 +196,7 @@ export default function CityVisitors({ visits, city, currentUserId, defaultStart
         </div>
       )}
 
-      {modalRecipient && currentUserId && (
+      {modalRecipient && (
         <SendRequestModal
           recipient={modalRecipient}
           senderId={currentUserId}

@@ -20,19 +20,22 @@ interface Connection {
   recipient: { id: string; name: string; bio: string; linkedin_url: string; activity_preferences: string[] };
 }
 
-export default function InboxClient({ currentUserId }: { currentUserId: string | null }) {
+export default function InboxClient() {
+  const [userId, setUserId] = useState<string>("");
   const [connections, setConnections] = useState<Connection[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (currentUserId) fetchConnections();
+    const id = localStorage.getItem("demo_user_id") ?? "";
+    setUserId(id);
+    if (id) fetchConnections(id);
     else setLoading(false);
-  }, [currentUserId]);
+  }, []);
 
-  async function fetchConnections() {
+  async function fetchConnections(id: string) {
     setLoading(true);
     try {
-      const res = await fetch(`/api/connections`);
+      const res = await fetch(`/api/connections?user_id=${id}`);
       const data = await res.json();
       setConnections(Array.isArray(data) ? data : []);
     } catch {
@@ -47,7 +50,7 @@ export default function InboxClient({ currentUserId }: { currentUserId: string |
       const res = await fetch(`/api/connections/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, user_id: userId }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -58,18 +61,11 @@ export default function InboxClient({ currentUserId }: { currentUserId: string |
     }
   }
 
-  if (!currentUserId) {
-    return (
-      <div className="text-gray-500 text-sm">
-        <a href="/login" className="text-teal-600 font-medium hover:underline">Log in</a> to view your connection requests.
-      </div>
-    );
-  }
-
   if (loading) return <div className="text-gray-400 text-sm">Loading...</div>;
+  if (!userId) return <div className="text-gray-500 text-sm">Select a user on the homepage first.</div>;
 
-  const received = connections.filter((c) => c.recipient_id === currentUserId);
-  const sent = connections.filter((c) => c.sender_id === currentUserId);
+  const received = connections.filter((c) => c.recipient_id === userId);
+  const sent = connections.filter((c) => c.sender_id === userId);
 
   return (
     <div className="space-y-8">

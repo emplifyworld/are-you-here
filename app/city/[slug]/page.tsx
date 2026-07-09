@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import CityVisitors from "@/components/CityVisitors";
-import { getCurrentAppUser } from "@/lib/auth";
 
 export const revalidate = 0;
 
@@ -15,7 +14,6 @@ export default async function CityPage({ params, searchParams }: Props) {
   const city = decodeURIComponent(slug);
 
   const supabase = await createClient();
-  const currentUser = await getCurrentAppUser();
 
   let query = supabase
     .from("visits")
@@ -40,7 +38,6 @@ export default async function CityPage({ params, searchParams }: Props) {
       <CityVisitors
         visits={visits ?? []}
         city={city}
-        currentUserId={currentUser?.id ?? null}
         defaultStart={start}
         defaultEnd={end}
       />
